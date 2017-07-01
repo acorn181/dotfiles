@@ -1,0 +1,106 @@
+
+# thub.com のレポジトリーを指定するだけ
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# git clone 後、実行すべきコマンドがある場合はこんな感じ
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+# :NERDTreeでファイルツリーを表示
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+    let NERDTreeShowHidden = 1
+    nmap <Leader><Tab> <C-w>w
+'''
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+hook_add = '''
+    " 入力モードで開始する
+    let g:unite_enable_start_insert=1
+    " バッファ一覧
+    noremap <C-P> :Unite buffer<CR>
+    " ファイル一覧
+    noremap <C-N> :Unite -buffer-name=file file<CR>
+    " 最近使ったファイルの一覧
+    noremap <C-Z> :Unite file_mru<CR>
+    " sourcesを「今開いているファイルのディレクトリ」とする
+    noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
+    " ウィンドウを分割して開く
+    au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+    au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+    " ウィンドウを縦に分割して開く
+    au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+    au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+    " ESCキーを2回押すと終了する
+    au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+    au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR> "
+'''
+
+# コメントを簡単に挿入
+# shift+vで選択して<C-_><C-_>でコメントを挿入
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+# (,{ が入力されると自動で),}を補完する
+[[plugins]]
+repo = 'Townk/vim-autoclose'
+
+# カーソル位置のコンテキストに合わせてfiletypeを切り替える
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['Shougo/context_filetype.vim']
+
+# カーソル位置のコンテキストのfiletypeを判定する
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+hook_add = '''
+    if !exists('g:context_filetype#filetypes')
+        let g:context_filetype#filetypes = {}
+    endif
+    " dein.toml編集用
+    let g:context_filetype#filetypes['toml'] = [
+    \ {'filetype':'vim', 'start':'^\s*hook_\(add\|source\|post_source\)\s*=\s*'.'""'.'"', 'end':'""'.'"'},
+    \ {'filetype':'vim', 'start':'^\s*hook_\(add\|source\|post_source\)\s*=\s*'.'""'.'"', 'end':'""'.'"'},
+    \ ]
+'''
+
+# インデントを明示的に表示
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+    let g:indent_guides_anable_on_vim_startup = 1
+'''
+
+# ブランチやタグを指定したいとき
+#[[plugins]]
+#repo = 'delphinus35/typescript-vim'
+#rev  = 'colorize-template-strings'
+
+# 特定の条件で読み込みたいとき
+#[[plugins]]
+#repo = 'elzr/vim-json'
+#if   = '''! has('kaoriya')'''
+
+# 依存関係を指定したいとき
+#[[plugins]]
+#repo    = 'vim-airline/vim-airline'
+#depends = ['vim-airline-themes']
+
+# 依存関係を指定したからと言って、自動でインストールはされない（ここは NeoBundle と違う）
+# [[plugins]]
+# repo = 'vim-airline/vim-airline-themes'
