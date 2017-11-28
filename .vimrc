@@ -80,4 +80,26 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " カラー系
 syntax on
 set background=dark
+filetype plugin indent on
 colorscheme badwolf
+
+" Neo Complete
+let g:acp_enableAtStartup=0
+let g:neocomplete#enable_at_startup=1
+let g:neocomplete#enable_smart_case=1
+let g:neocomplete#sources#syntax#min_keyword_lenth=2
+let g:neocomplete#lock_buffer_name_pattern='\*ku\*'
+
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns={}
+endif
+let g:neocomplete#keyword_patterns['default']='\h\w*'
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
